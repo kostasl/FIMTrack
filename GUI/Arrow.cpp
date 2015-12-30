@@ -34,13 +34,14 @@
 #include "Arrow.hpp"
 
 Arrow::Arrow(QGraphicsItem *parent, QGraphicsScene *scene)
-    : QGraphicsLineItem(((QGraphicsLineItem*)parent)->line() ) // scene Mod For Linux Build QGraphicsLineItem::line()
+    : QGraphicsLineItem() // scene Mod For Linux Build QGraphicsLineItem::line()
 {
+
     this->mColor        = Qt::red;//QColor(qrand() % 256, qrand() % 256, qrand() % 256);
     
     this->setFlag(QGraphicsItem::ItemIsSelectable, false);
     this->setPen(QPen(this->mColor, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    //scene->addItem(this); //Add Line to Scene - Linux Build
+
 }
 
 Arrow::~Arrow()
