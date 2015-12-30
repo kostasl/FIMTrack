@@ -51,6 +51,12 @@
 #include "RegionOfInterestContainer.hpp"
 #include "LandmarkContainer.hpp"
 
+
+//Add for Linux Build
+#include <QLineEdit>
+#include <QInputDialog>
+// --- //
+
 class TrackerScene : public QGraphicsScene
 {
     

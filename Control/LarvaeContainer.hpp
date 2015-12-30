@@ -39,6 +39,10 @@
 //#include <QtCore>
 //#include <QtGui>
 
+//Linux compile includes
+#include <QFileDialog>
+// ----  --- --- //
+
 #include "Data/Larva.hpp"
 #include "InputGenerator.hpp"
 #include "OutputGenerator.hpp"

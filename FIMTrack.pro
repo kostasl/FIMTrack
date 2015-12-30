@@ -8,6 +8,9 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+#Added for linux build
+QT += printsupport
+
 TARGET = FIMTrack
 TEMPLATE = app
 

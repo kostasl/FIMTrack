@@ -46,6 +46,9 @@
 #include "TrackerSceneLarvaCircle.hpp"
 #include "Arrow.hpp"
 
+//Includes for Linux Build
+#include <QGraphicsScene>
+
 class TrackerSceneLarva: public QObject
 {
     Q_OBJECT

@@ -45,6 +45,10 @@
 #include "Landmark.hpp"
 #include "RegionOfInterestContainer.hpp"
 
+//include For Linux Build
+#include <QMenu>
+// -- //
+
 class TrackerGraphicsView : public QGraphicsView
 {
     Q_OBJECT

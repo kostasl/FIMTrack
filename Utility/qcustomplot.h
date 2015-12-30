@@ -54,7 +54,8 @@
 #  include <QPrintEngine>
 #else
 #  include <QtNumeric>
-#  include <QtPrintSupport>
+#  include <QtPrintSupport/QtPrintSupport>
+#  include <QtPrintSupport/QPrinter>
 #endif
 
 #pragma clang diagnostic pop
