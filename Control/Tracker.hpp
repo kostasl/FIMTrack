@@ -111,7 +111,7 @@ public slots:
      * @param showProgress is true if the preview image shall be displayed in the main gui
      * @param previewImg is a pointer to an image for the tracking preview
      */
-    void startTrackingSlot(std::vector<std::vector<std::string> > const & multiImgPaths, bool showProgress, Undistorter const & undist, RegionOfInterestContainer const* ROIContainer = NULL);
+    void startTrackingSlot(std::vector<std::vector<cv::String> > const & multiImgPaths, bool showProgress, Undistorter const & undist, RegionOfInterestContainer const* ROIContainer = NULL);
 
 private:
     // MEMBER VARIABLES:  
@@ -130,7 +130,7 @@ private:
     /**
      * @brief imgPaths stores the path where to find the images
      */
-    std::vector<std::vector<std::string> > multiImgPaths;
+    std::vector<std::vector<cv::String> > multiImgPaths;
 
     /**
      * @brief showTrackingProgress is used to activate / inactivate the live tracking preview in the main gui
@@ -148,7 +148,7 @@ private:
      * @param bs is a background subtractor object
      * @param previewImg a pointer to an image for live tracking preview in the main gui
      */
-    void track(std::vector<std::string> const &imgPaths, Backgroundsubtractor const & bs, Undistorter const & undist, const RegionOfInterestContainer *ROIContainer = NULL);
+    void track(t_filePaths const &imgPaths, Backgroundsubtractor const & bs, Undistorter const & undist, const RegionOfInterestContainer *ROIContainer = NULL);
 
     /**
      * @brief extractRawLarvae extractes the raw larvae objects from the images.

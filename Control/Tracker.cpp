@@ -44,7 +44,7 @@ Tracker::Tracker(QObject *parent) : QObject(parent)
     connect(this,SIGNAL(logMessageSignal(QString,LOGLEVEL)), Logger::getInstance(), SLOT(handleLogMessage(QString,LOGLEVEL)));
 }
 
-void Tracker::startTrackingSlot(const std::vector<std::vector<std::string> > &multiImgPaths,
+void Tracker::startTrackingSlot(const std::vector<std::vector<cv::String> > &multiImgPaths,
                                 bool showProgress,
                                 const Undistorter &undist,
                                 RegionOfInterestContainer const* ROIContainer)
@@ -57,13 +57,13 @@ void Tracker::startTrackingSlot(const std::vector<std::vector<std::string> > &mu
     
     emit logMessageSignal("Start Tracking!", INFO);
     
-    for (vector<vector<string> >::const_iterator pathsIt = this->multiImgPaths.begin(); pathsIt != this->multiImgPaths.end(); ++pathsIt)
+    for (vector<vector<cv::String> >::const_iterator pathsIt = this->multiImgPaths.begin(); pathsIt != this->multiImgPaths.end(); ++pathsIt)
     {
         this->larvaID = 0;
         
         curRawLarvae.clear();
         this->mLarvaeContainer.removeAllLarvae();
-        vector<string> imgPaths = *pathsIt;
+        t_filePaths imgPaths = *pathsIt;
         
         Backgroundsubtractor bs(imgPaths,undist);
         
@@ -111,11 +111,11 @@ void Tracker::startTrackingSlot(const std::vector<std::vector<std::string> > &mu
     emit logMessageSignal("Tracking done!", INFO);
 }
 
-void Tracker::track(const std::vector<std::string> &imgPaths, const Backgroundsubtractor &bs, const Undistorter &undist, RegionOfInterestContainer const* ROIContainer)
+void Tracker::track(t_filePaths &imgPaths, const Backgroundsubtractor &bs, const Undistorter &undist, RegionOfInterestContainer const* ROIContainer)
 {   
     unsigned int timePoint = 0;
     
-    for (vector<string>::const_iterator cIt = imgPaths.begin(); cIt != imgPaths.end(); ++cIt)
+    for (t_filePaths::const_iterator cIt = imgPaths.begin(); cIt != imgPaths.end(); ++cIt)
     {
         emit logMessageSignal(QString("Process Image: ").append(QtOpencvCore::str2qstr(*cIt)), INFO);
         cv::Mat img;

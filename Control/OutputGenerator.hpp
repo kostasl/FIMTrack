@@ -79,17 +79,17 @@ public:
     
     static void writeOutputLarva(std::string const & path, 
                                  std::vector<Larva> const& larvae, 
-                                 std::vector<std::string> const& imgPaths, 
+                                 t_filePaths const& imgPaths,
                                  const bool useUndist,
                                  RegionOfInterestContainer const* RIOContainer = NULL,
                                  LandmarkContainer const* landmarkContainer = NULL);
 
     static void drawTrackingResults(std::string const &trackImgPath,
-                                    std::vector<std::string> const & imgPaths,
+                                    t_filePaths const & imgPaths,
                                     std::vector<Larva> const & larvae);
 
     static void drawTrackingResultsNoNumbers(std::string const &trackImgPath,
-                                             std::vector<std::string> const & imgPaths,
+                                             t_filePaths const & imgPaths,
                                              std::vector<Larva> const & larvae);
     
     static void saveResultImage(QString const& path, QImage const& img);

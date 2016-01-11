@@ -67,7 +67,7 @@ public:
      * @param imgPaths contains the paths to the images
      * @param useUndist is a flag to indicate if undistortion (for lens distortion using a camera matrix) is used
      */
-    static void readOutputLarvae(std::string const& path, std::vector<Larva> & dstLarvae, std::vector<std::string> &imgPaths, bool &useUndist);
+    static void readOutputLarvae(std::string const& path, std::vector<Larva> & dstLarvae, std::vector<cv::String> &imgPaths, bool &useUndist);
     
     static void readRegionOfInterests(const std::string &path, RegionOfInterestContainer *ROIContainert);
     

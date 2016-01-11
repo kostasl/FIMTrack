@@ -39,6 +39,8 @@
 #include "GUI/LandmarkContainer.hpp"
 #include "GUI/RegionOfInterestContainer.hpp"
 
+typedef const std::vector<cv::String> t_filePaths;
+
 /// LARVA IN/OUTPUT
 cv::FileStorage& operator<<(cv::FileStorage& fs, Larva const& larva);
 
