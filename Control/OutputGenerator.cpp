@@ -519,7 +519,7 @@ void OutputGenerator::writeLarvaeInverted(std::string const& path,
 
 void OutputGenerator::writeOutputLarva(const std::string &path, 
                                        const std::vector<Larva> &larvae, 
-                                       const std::vector<cv::String> &imgPaths,
+                                       const std::vector<std::string> &imgPaths,  
                                        const bool useUndist,
                                        const RegionOfInterestContainer *RIOContainer,
                                        const LandmarkContainer *landmarkContainer)
@@ -553,7 +553,7 @@ void OutputGenerator::writeOutputLarva(const std::string &path,
 }
 
 void OutputGenerator::drawTrackingResults(const std::string &trackImgPath, 
-                                          t_filePaths &imgPaths,
+                                          const std::vector<std::string> &imgPaths, 
                                           const std::vector<Larva> &larvae)
 {
     cv::Mat tmpImg = cv::imread(imgPaths.at(0),0);
@@ -593,7 +593,7 @@ void OutputGenerator::drawTrackingResults(const std::string &trackImgPath,
 }
 
 void OutputGenerator::drawTrackingResultsNoNumbers(const std::string &trackImgPath,
-                                                   t_filePaths &imgPaths,
+                                                   const std::vector<std::string> &imgPaths,
                                                    const std::vector<Larva> &larvae)
 {
     cv::Mat tmpImg = cv::imread(imgPaths.at(0),0);

@@ -49,7 +49,7 @@ void InputGenerator::readMatrices(const std::string &path,
     }
 }
 
-void InputGenerator::readOutputLarvae(const std::string &path, std::vector<Larva> &dstLarvae, std::vector<cv::String> &imgPaths, bool &useUndist)
+void InputGenerator::readOutputLarvae(const std::string &path, std::vector<Larva> &dstLarvae, std::vector<std::string> &imgPaths, bool &useUndist)
 {
     cv::FileStorage fs = cv::FileStorage(path, cv::FileStorage::READ, "UTF-8");
     

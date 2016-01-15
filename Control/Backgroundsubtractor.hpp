@@ -59,12 +59,12 @@ private:
     
     void updateBackgroundImage(cv::Mat const& grayImage);
 
-    void generateBackgroundImage(std::vector<cv::String> const & imagePaths, Undistorter const & undist);
+    void generateBackgroundImage(std::vector<std::string> const & imagePaths, Undistorter const & undist);
 
-    void generateBackgroundImage(std::vector<cv::String> const & imagePaths, unsigned int iFrom, unsigned int iOffset, unsigned int iTo, Undistorter const & undist);
+    void generateBackgroundImage(std::vector<std::string> const & imagePaths, unsigned int iFrom, unsigned int iOffset, unsigned int iTo, Undistorter const & undist);
 
 public:
-    Backgroundsubtractor(std::vector<cv::String> const& imagePaths, Undistorter const & undist, QObject *parent = 0);
+    Backgroundsubtractor(std::vector<std::string> const& imagePaths, Undistorter const & undist, QObject *parent = 0);
     
     cv::Mat& substract(cv::Mat const& src, cv::Mat& dst) const;
 

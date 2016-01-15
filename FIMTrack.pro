@@ -24,38 +24,32 @@ include(Main/main.pri)
 
 CONFIG   += app_bundle
 
-##macx {
-# #   QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.9
-##    QMAKE_CXXFLAGS += -stdlib=libc++
-##    INCLUDEPATH += /usr/local/include
-#    LIBS += -L/usr/local/lib \
-#            -lopencv_core \
-#            -lopencv_highgui \
-#            -lopencv_imgproc
+macx {
 
-##    QMAKE_CXXFLAGS_WARN_ON = -Wno-unused-variable -Wno-reorder
-#}
+    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.9
 
-#Works with OPENCV 2.4 - 3.0 has a problem with persistence.hpp
+    QMAKE_CXXFLAGS += -stdlib=libc++
+
+    INCLUDEPATH += /usr/local/include
+
+    LIBS += -L/usr/local/lib \
+            -lopencv_core \
+            -lopencv_highgui \
+            -lopencv_imgproc
+
+    QMAKE_CXXFLAGS_WARN_ON = -Wno-unused-variable -Wno-reorder
+}
+
 unix {
 
     QMAKE_CXXFLAGS += -std=c++11
 
-#    INCLUDEPATH += /usr/include
-    INCLUDEPATH +=  /home/klagogia/opencv3git-install/include
+    INCLUDEPATH += /usr/include
 
-    LIBS += -L/home/klagogia/opencv3git-install/lib \
+    LIBS += -L/usr/lib \
             -lopencv_core \
             -lopencv_highgui \
-            -lopencv_imgproc \
-            -lopencv_imgcodecs
-
-
-#    LIBS += -L/usr/lib/x86_64-linux-gnu \
-#            -lopencv_core \
-#            -lopencv_highgui \
-#            -lopencv_imgproc
-
+            -lopencv_imgproc
 
     QMAKE_CXXFLAGS_WARN_ON = -Wno-unused-variable -Wno-reorder
 }

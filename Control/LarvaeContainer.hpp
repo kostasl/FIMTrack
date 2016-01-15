@@ -175,7 +175,7 @@ public:
     void interplolateLarvae();
     
     void readLarvae(QString const& ymlFileName, 
-                    std::vector<cv::String> &imgPaths,
+                    std::vector<std::string> &imgPaths, 
                     bool useUndist);
     
     QPair<QVector<uint>, QVector<uint> > getVisibleLarvaID(uint time);
@@ -194,7 +194,7 @@ public:
     bool eraseLarvaAt(uint larvaID, uint time);
     bool eraseLarva(uint larvaID);
     
-    void saveResultLarvae(const std::vector<cv::String> &imgPaths,
+    void saveResultLarvae(const std::vector<std::string> &imgPaths, 
                           QImage const& img,
                           const bool useUndist, 
                           RegionOfInterestContainer const* ROIContainer = NULL,

@@ -33,7 +33,7 @@
 
 #include "Backgroundsubtractor.hpp"
 
-Backgroundsubtractor::Backgroundsubtractor(t_filePaths const& imagePaths, Undistorter const & undist, QObject *parent) : QObject(parent)
+Backgroundsubtractor::Backgroundsubtractor(std::vector<std::string> const& imagePaths, Undistorter const & undist, QObject *parent) : QObject(parent)
 {
     try
     {
@@ -141,7 +141,7 @@ void Backgroundsubtractor::updateBackgroundImage(cv::Mat const& grayImage)
     }
 }
 
-void Backgroundsubtractor::generateBackgroundImage(std::vector<cv::String> const& imagePaths, Undistorter const & undist)
+void Backgroundsubtractor::generateBackgroundImage(std::vector<std::string> const& imagePaths, Undistorter const & undist)
 {
     try
     {
@@ -196,7 +196,7 @@ void Backgroundsubtractor::generateBackgroundImage(std::vector<cv::String> const
     }
 }
 
-void Backgroundsubtractor::generateBackgroundImage(const std::vector<cv::String> &imagePaths, unsigned int iFrom, unsigned int iOffset, unsigned int iTo, Undistorter const & undist)
+void Backgroundsubtractor::generateBackgroundImage(const std::vector<std::string> &imagePaths, unsigned int iFrom, unsigned int iOffset, unsigned int iTo, Undistorter const & undist)
 {
     try
     {

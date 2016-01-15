@@ -55,10 +55,9 @@ Larva* LarvaeContainer::createDefaultLarva(uint timeStep)
 }
 
 void LarvaeContainer::readLarvae(const QString &ymlFileName, 
-                                 std::vector<cv::String> &imgPaths,
+                                 std::vector<std::string> &imgPaths, 
                                  bool useUndist)
 {
-
     InputGenerator::readOutputLarvae(QtOpencvCore::qstr2str(ymlFileName),
                                      this->mLarvae,
                                      imgPaths,
@@ -655,7 +654,7 @@ bool LarvaeContainer::eraseLarva(uint larvaID)
     return false;
 }
 
-void LarvaeContainer::saveResultLarvae(const std::vector<cv::String> &imgPaths, const QImage &img,
+void LarvaeContainer::saveResultLarvae(const std::vector<std::string> &imgPaths, const QImage &img, 
                                        const bool useUndist, 
                                        const RegionOfInterestContainer *ROIContainer, 
                                        const LandmarkContainer *landmarkContainer)

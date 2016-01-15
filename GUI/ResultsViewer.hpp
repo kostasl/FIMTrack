@@ -144,7 +144,7 @@ private:
     
     TrackerScene*                           mScene;
 
-    std::vector<cv::String>                mImgPaths; //KL: Converted to cv::String for compatibility with new opencv3.0  persistence.hpp header
+    std::vector<std::string>                mImgPaths;
     bool                                    mUseUndist;
 
     int                                     mNumberOfImages;
