@@ -94,6 +94,9 @@ namespace Algorithms
     
     void Hungarian::padMatrix(double padValue)
     {
+        if (padValue == 0) //KL Added check
+            return;
+
         // we have to add some rows
         if(this->mCostMatrixOriginal.rows < this->mCostMatrixOriginal.cols)
         {
@@ -107,6 +110,14 @@ namespace Algorithms
         }
         else
         {
+            //KL Added
+            if (this->mCostMatrix.empty())
+                return;
+
+            if (this->mCostMatrix.rows < 1 )
+                return;
+
+
             int times = this->mCostMatrixOriginal.rows - this->mCostMatrixOriginal.cols;
             for(int i = 0; i < times; ++i)
             {
@@ -420,6 +431,10 @@ namespace Algorithms
      */
     int Hungarian::stepOne()
     {
+        //KL
+        if (this->mCostMatrix.empty())
+            return 7; //Jump to step 7?
+
         for(int row = 0; row < this->mRows; ++row)
         {
             double minCostInRow = this->mCostMatrix.at<double>(row, 0);
@@ -446,6 +461,10 @@ namespace Algorithms
      */
     int Hungarian::stepTwo()
     {
+        //KL
+        if (this->mCostMatrix.empty())
+            return 7; //Jump to step 7?
+
         for(int row = 0; row < this->mRows; ++row)
         {
             if(this->isRowCovered(row))
