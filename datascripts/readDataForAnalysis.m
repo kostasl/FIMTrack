@@ -51,7 +51,7 @@ for i=1:size(CSVFiles,1)
     %setVarNames of the dataset
     tt1 = fnameparts(end-2);
     tt2 = fnameparts(end-1);
-    cellLarva       = repmat({strcat(tt1{1},'/',tt2{1},'/larva')}, 1, numColumns);
+    cellLarva       = repmat({strcat(tt1{1},'_',tt2{1},'_larva')}, 1, numColumns);
     cellLarvaID     = cell(1, numColumns);
     
     for i=1:numColumns
