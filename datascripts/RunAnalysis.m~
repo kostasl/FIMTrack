@@ -1,0 +1,15 @@
+
+strDir = '/home/klagogia/Videos/FIMTrackVideos/OregonR/';
+
+speed_thres = 1;
+[WT_Dat,N,srcDir] = readDataForAnalysis(strDir);
+velo_wildtype = selectFeature(WT_Dat, 'velo');
+
+WT_list_velocities = double(velo_wildtype(:,2:end));
+% list_velocities = list_velocities(tbl_velocities > speed_thres);
+mean_velo = nanmedian(WT_list_velocities(WT_list_velocities>speed_thres));
+
+WT_OverallMeanSpeed = nanmedian(mean_velo)
+%mean_velo = mean_velo(~isnan(mean_velo))
+
+boxplot(WT_list_velocities)
