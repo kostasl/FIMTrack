@@ -3,20 +3,21 @@
 
 
 %% Import Data Sets
-strDir = '/home/klagogia/Videos/FIMTrackVideos/OregonR/';
+strDir = '/media/kostasl/FlashDrive/FIMTracker/FIMtrackerOutput/OregonR/';
 [WT_Dat,N,srcDir] = readDataForAnalysis(strDir);
-strDir = '/home/klagogia/Videos/FIMTrackVideos/v1016 AbetaArc';
+
+strDir = '/media/kostasl/FlashDrive/FIMTracker/FIMtrackerOutput/v1016 AbetaArc';
 [ABv1016_Dat,N,srcDir] = readDataForAnalysis(strDir);
 
-strDir = '/home/klagogia/Videos/FIMTrackVideos/v1190 APPTau';
+strDir = '/media/kostasl/FlashDrive/FIMTracker/FIMtrackerOutput/v1190 APPTau';
 [v1190_Dat,N,srcDir] = readDataForAnalysis(strDir);
 
 
-strDir = '/home/klagogia/Videos/FIMTrackVideos/attP40xC155 (gen ctr BWD)';
-[attP40_Dat,N,srcDir] = readDataForAnalysis(strDir);
+%strDir = '/media/kostasl/FlashDrive/FIMTracker/FIMtrackerOutput/attP40xC155 (gen ctr BWD)';
+%[attP40_Dat,N,srcDir] = readDataForAnalysis(strDir);
 
 
-
+minTrackletLength = 200;
 
 %% EXTRACT DATA and ANALYSE for Mean Speeds
 speed_thres = 0;
@@ -24,9 +25,18 @@ speed_thres = 0;
 velo_wildtype = selectFeature(WT_Dat, 'velo');
 
 WT_list_velocities = double(velo_wildtype(:,2:end));
+
+%Remove Short Tracklets from Dataset
+vNanCountInColumns = sum(~isnan(WT_list_velocities),1);
+colIndexToRemove = find(vNanCountInColumns < minTrackletLength);
+velo_wildtype(:,colIndexToRemove+1) = [];
+%Update The Matrix Of Tracklets
+WT_list_velocities = double(velo_wildtype(:,2:end));
+
 % list_velocities = list_velocities(tbl_velocities > speed_thres);
 mean_velo = nanmean(WT_list_velocities(WT_list_velocities>speed_thres));
 median_velo = nanmedian(WT_list_velocities(WT_list_velocities>speed_thres));
+
 
 WT_OverallMeanSpeed  = nanmean(mean_velo)
 WT_OverallMedianSpeed = nanmedian(median_velo)
@@ -43,10 +53,19 @@ dlmwrite('WT_velocities.csv',[0 nanmean(WT_list_velocities)],'delimiter','\t','-
 dlmwrite('WT_velocities.csv',[0 nanmedian(WT_list_velocities)],'delimiter','\t','-append');
 
 
-%ABv1016 
+%% ABv1016 
 velo_ABv1016 = selectFeature(ABv1016_Dat, 'velo');
 
 ABv1016_list_velocities = double(velo_ABv1016(:,2:end));
+
+%Remove Short Tracklets from Dataset
+vNanCountInColumns = sum(~isnan(ABv1016_list_velocities),1);
+colIndexToRemove = find(vNanCountInColumns < minTrackletLength);
+velo_ABv1016(:,colIndexToRemove+1) = [];
+%Update The Matrix Of Tracklets
+ABv1016_list_velocities = double(velo_ABv1016(:,2:end));
+
+
 % list_velocities = list_velocities(tbl_velocities > speed_thres);
 mean_velo = nanmean(ABv1016_list_velocities(ABv1016_list_velocities>speed_thres));
 median_velo = nanmedian(ABv1016_list_velocities(ABv1016_list_velocities>speed_thres));
@@ -65,6 +84,16 @@ dlmwrite('ABv1016_velocities.csv',[0 nanmedian(ABv1016_list_velocities)],'delimi
 velo_v1190 = selectFeature(v1190_Dat, 'velo');
 
 v1190_list_velocities = double(velo_v1190(:,2:end));
+
+%Remove Short Tracklets from Dataset
+vNanCountInColumns = sum(~isnan(v1190_list_velocities),1);
+colIndexToRemove = find(vNanCountInColumns < minTrackletLength);
+velo_v1190(:,colIndexToRemove+1) = [];
+%Update The Matrix Of Tracklets
+v1190_list_velocities = double(velo_v1190(:,2:end));
+
+
+
 % list_velocities = list_velocities(tbl_velocities > speed_thres);
 mean_velo = nanmean(v1190_list_velocities(v1190_list_velocities>speed_thres));
 median_velo = nanmedian(v1190_list_velocities(v1190_list_velocities>speed_thres));
@@ -79,22 +108,22 @@ dlmwrite('v1190_velocities.csv',[0 nanmean(v1190_list_velocities)],'delimiter','
 dlmwrite('v1190_velocities.csv',[0 nanmedian(v1190_list_velocities)],'delimiter','\t','-append');
 
 
-%% attP40
-velo_attP40 = selectFeature(attP40_Dat, 'velo');
-
-attP40_list_velocities = double(velo_attP40(:,2:end));
-% list_velocities = list_velocities(tbl_velocities > speed_thres);
-mean_velo = nanmean(attP40_list_velocities(attP40_list_velocities>speed_thres));
-median_velo = nanmedian(attP40_list_velocities(attP40_list_velocities>speed_thres));
-
-attP40_OverallMeanSpeed = nanmean(mean_velo)
-attP40_OverallMedianSpeed = nanmedian(median_velo)
-%mean_velo = mean_velo(~isnan(mean_velo))
-velo_attP40_exp = join(velo_attP40,mean_velo,median_velo)
-export(velo_attP40,'File','attP40_velocities.csv','WriteVarNames',true);
-
-dlmwrite('attP40_velocities.csv',[0 nanmean(attP40_list_velocities)],'delimiter','\t','-append');
-dlmwrite('attP40_velocities.csv',[0 nanmedian(attP40_list_velocities)],'delimiter','\t','-append');
+% %% attP40
+% velo_attP40 = selectFeature(attP40_Dat, 'velo');
+% 
+% attP40_list_velocities = double(velo_attP40(:,2:end));
+% % list_velocities = list_velocities(tbl_velocities > speed_thres);
+% mean_velo = nanmean(attP40_list_velocities(attP40_list_velocities>speed_thres));
+% median_velo = nanmedian(attP40_list_velocities(attP40_list_velocities>speed_thres));
+% 
+% attP40_OverallMeanSpeed = nanmean(mean_velo)
+% attP40_OverallMedianSpeed = nanmedian(median_velo)
+% %mean_velo = mean_velo(~isnan(mean_velo))
+% velo_attP40_exp = join(velo_attP40,mean_velo,median_velo)
+% export(velo_attP40,'File','attP40_velocities.csv','WriteVarNames',true);
+% 
+% dlmwrite('attP40_velocities.csv',[0 nanmean(attP40_list_velocities)],'delimiter','\t','-append');
+% dlmwrite('attP40_velocities.csv',[0 nanmedian(attP40_list_velocities)],'delimiter','\t','-append');
 
 %% Produce Plots
 %boxplot(WT_list_velocities);
@@ -109,4 +138,4 @@ dlmwrite('attP40_velocities.csv',[0 nanmedian(attP40_list_velocities)],'delimite
 
 
 %%Save
-save('ImportedData.mat');
+%save('ImportedData.mat');
