@@ -282,81 +282,90 @@ void OutputGenerator::writeLarvaeInverted(std::string const& path,
         ofs << "\n";
     }
     
+    //KL: BUG Here - Vector Gives Out or Range
     // write spinepoints
-    unsigned int midPos = (int) (((larvae.at(0)).getNSpinePoints()-1)/2);
-    
-    for(int i = 1; i < larvae.at(0).getNSpinePoints() - 1; ++i)
+    if (larvae.size() > 0)
     {
-        // write x position of spinepoint i
+        unsigned int midPos = (int) (((larvae.at(0)).getNSpinePoints()-1)/2);
+
+        for(int i = 1; i < larvae.at(0).getNSpinePoints() - 1; ++i)
+        {
+            // write x position of spinepoint i
+            for (unsigned int t = 0; t< movieLength; ++t)
+            {
+                ofs << "spinepoint_" << i << "_x(" << t << ")";
+
+                for (vector<Larva>::const_iterator larvaIt = larvae.begin(); larvaIt != larvae.end(); ++larvaIt)
+                {
+                    ofs << "," << larvaIt->getStrSpine(t,i,0).c_str();
+                }
+
+                ofs << "\n";
+            }
+
+            // write y position of spinepoint i
+            for (unsigned int t = 0; t< movieLength; ++t)
+            {
+                ofs << "spinepoint_" << i << "_y(" << t << ")";
+
+                for (vector<Larva>::const_iterator larvaIt = larvae.begin(); larvaIt != larvae.end(); ++larvaIt)
+                {
+                    ofs << "," << larvaIt->getStrSpine(t,i,1).c_str();
+                }
+
+                ofs << "\n";
+            }
+        }
+    }
+    
+    if (larvae.size() > 0)
+    {
+        // write tail x position
+        unsigned int tailPos = larvae.at(0).getNSpinePoints() - 1;
         for (unsigned int t = 0; t< movieLength; ++t)
         {
-            ofs << "spinepoint_" << i << "_x(" << t << ")";
-            
+            ofs << "tail_x(" << t << ")";
+
             for (vector<Larva>::const_iterator larvaIt = larvae.begin(); larvaIt != larvae.end(); ++larvaIt)
             {
-                ofs << "," << larvaIt->getStrSpine(t,i,0).c_str();
+                ofs << "," << larvaIt->getStrSpine(t,tailPos,0).c_str();
             }
-            
+
             ofs << "\n";
         }
-        
-        // write y position of spinepoint i
+
+        // write tail y position
         for (unsigned int t = 0; t< movieLength; ++t)
         {
-            ofs << "spinepoint_" << i << "_y(" << t << ")";
-            
+            ofs << "tail_y(" << t << ")";
+
             for (vector<Larva>::const_iterator larvaIt = larvae.begin(); larvaIt != larvae.end(); ++larvaIt)
             {
-                ofs << "," << larvaIt->getStrSpine(t,i,1).c_str();
+                ofs << "," << larvaIt->getStrSpine(t,tailPos,1).c_str();
             }
-            
+
             ofs << "\n";
         }
-    }
+    } //If List Of Larvae not Empty
     
-    // write tail x position
-    unsigned int tailPos = larvae.at(0).getNSpinePoints() - 1;
-    for (unsigned int t = 0; t< movieLength; ++t)
+    if (larvae.size() > 0)
     {
-        ofs << "tail_x(" << t << ")";
-        
-        for (vector<Larva>::const_iterator larvaIt = larvae.begin(); larvaIt != larvae.end(); ++larvaIt)
+        // write spinepoint radii
+        for(int i = 1; i < larvae.at(0).getNSpinePoints()-1; ++i)
         {
-            ofs << "," << larvaIt->getStrSpine(t,tailPos,0).c_str();
-        }
-        
-        ofs << "\n";
-    }
-    
-    // write tail y position
-    for (unsigned int t = 0; t< movieLength; ++t)
-    {
-        ofs << "tail_y(" << t << ")";
-        
-        for (vector<Larva>::const_iterator larvaIt = larvae.begin(); larvaIt != larvae.end(); ++larvaIt)
-        {
-            ofs << "," << larvaIt->getStrSpine(t,tailPos,1).c_str();
-        }
-        
-        ofs << "\n";
-    }
-    
-    // write spinepoint radii
-    for(int i = 1; i < larvae.at(0).getNSpinePoints()-1; ++i)
-    {
-        for (unsigned int t = 0; t< movieLength; ++t)
-        {
-            ofs << "radius_" << i << "(" << t << ")";
-            
-            for (vector<Larva>::const_iterator larvaIt = larvae.begin(); larvaIt != larvae.end(); ++larvaIt)
+            for (unsigned int t = 0; t< movieLength; ++t)
             {
-                ofs << "," << larvaIt->getStrSpineRadius(t,i).c_str();
+                ofs << "radius_" << i << "(" << t << ")";
+
+                for (vector<Larva>::const_iterator larvaIt = larvae.begin(); larvaIt != larvae.end(); ++larvaIt)
+                {
+                    ofs << "," << larvaIt->getStrSpineRadius(t,i).c_str();
+                }
+
+                ofs << "\n";
             }
-            
-            ofs << "\n";
         }
     }
-    
     // write is coiled indicator
     for (unsigned int t = 0; t< movieLength; ++t)
     {
