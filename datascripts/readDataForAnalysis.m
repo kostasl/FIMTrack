@@ -61,6 +61,13 @@ for i=1:size(CSVFiles,1)
     cellLarvaIDFinal    = cellfun(@(x,y) strcat(x,num2str(y)), cellLarva, cellLarvaID, 'uniformoutput', 0);
     cellLarvaIDFinal    = [cellstr('ID') cellLarvaIDFinal];
     
+    %I fixed the string so its suitable for VarNames - Otherwise it causes
+    %trouble
+    cellLarvaIDFinal = strrep(cellLarvaIDFinal, 'output', '');
+    cellLarvaIDFinal = strrep(cellLarvaIDFinal, '(', '');
+    cellLarvaIDFinal = strrep(cellLarvaIDFinal, ')', '');
+    cellLarvaIDFinal = strrep(cellLarvaIDFinal, '-', '_');
+    
     %display(cellLarvaIDFinal);
     %% Create output variable
     Data = dataset(dataArray{1:end-1}, 'VarNames', cellLarvaIDFinal);
