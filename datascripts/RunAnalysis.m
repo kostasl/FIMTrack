@@ -320,38 +320,38 @@ dlmwrite('attP40xC155_velocities.csv',[0 nanmedian(attP40xC155_list_velocities)]
 
 %% BWD46 wt TEST
 %import data
-
-strDir = strcat(baseDir,'/BWD46 Abeta(wt)/FT_20160111_BWD46_Abeta(wt)_6/');
-[BWD46T_Dat,N,srcDir] = readDataForAnalysis(strDir);
-
-
-BWD46T_velodataset = selectFeature(BWD46T_Dat, 'velo');
-
-BWD46T_list_velocities = double(BWD46T_velodataset(:,2:end));
-
-%Remove Short Tracklets from Dataset
-vNanCountInColumns = sum(~isnan(BWD46T_list_velocities),1);
-colIndexToRemove = find(vNanCountInColumns < minTrackletLength);
-
-BWD46T_velodataset(:,colIndexToRemove+1) = [];
-%Update The Matrix Of Tracklets
-BWD46T_list_velocities = double(BWD46T_velodataset(:,2:end));
-
-
-% list_velocities = list_velocities(tbl_velocities > speed_thres);
-mean_velo = nanmean(BWD46T_list_velocities(BWD46T_list_velocities>speed_thres));
-median_velo = nanmedian(BWD46T_list_velocities(BWD46T_list_velocities>speed_thres));
-
-BWD46T_OverallMeanSpeed = nanmean(mean_velo)
-BWD46T_OverallMedianSpeed = nanmedian(median_velo)
-%mean_velo = mean_velo(~isnan(mean_velo))
-
-export(BWD46T_velodataset,'File','BWD46T_velocities.csv','WriteVarNames',true);
-
-dlmwrite('BWD46T_velocities.csv',[0 nanmean(BWD46T_list_velocities)],'delimiter','\t','-append');
-dlmwrite('BWD46T_velocities.csv',[0 nanmedian(BWD46T_list_velocities)],'delimiter','\t','-append');
-
-
+% 
+% strDir = strcat(baseDir,'/BWD46 Abeta(wt)/FT_20160111_BWD46_Abeta(wt)_6/');
+% [BWD46T_Dat,N,srcDir] = readDataForAnalysis(strDir);
+% 
+% 
+% BWD46T_velodataset = selectFeature(BWD46T_Dat, 'velo');
+% 
+% BWD46T_list_velocities = double(BWD46T_velodataset(:,2:end));
+% 
+% %Remove Short Tracklets from Dataset
+% vNanCountInColumns = sum(~isnan(BWD46T_list_velocities),1);
+% colIndexToRemove = find(vNanCountInColumns < minTrackletLength);
+% 
+% BWD46T_velodataset(:,colIndexToRemove+1) = [];
+% %Update The Matrix Of Tracklets
+% BWD46T_list_velocities = double(BWD46T_velodataset(:,2:end));
+% 
+% 
+% % list_velocities = list_velocities(tbl_velocities > speed_thres);
+% mean_velo = nanmean(BWD46T_list_velocities(BWD46T_list_velocities>speed_thres));
+% median_velo = nanmedian(BWD46T_list_velocities(BWD46T_list_velocities>speed_thres));
+% 
+% BWD46T_OverallMeanSpeed = nanmean(mean_velo)
+% BWD46T_OverallMedianSpeed = nanmedian(median_velo)
+% %mean_velo = mean_velo(~isnan(mean_velo))
+% 
+% export(BWD46T_velodataset,'File','BWD46T_velocities.csv','WriteVarNames',true);
+% 
+% dlmwrite('BWD46T_velocities.csv',[0 nanmean(BWD46T_list_velocities)],'delimiter','\t','-append');
+% dlmwrite('BWD46T_velocities.csv',[0 nanmedian(BWD46T_list_velocities)],'delimiter','\t','-append');
+% 
+% 
 
 
 
