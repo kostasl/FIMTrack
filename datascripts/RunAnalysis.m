@@ -8,9 +8,9 @@ baseDir = '/home/klagogia/Videos/FIMTrackVideos';
 
 
 minTrackletLength = 200;
-
-%% EXTRACT DATA and ANALYSE for Mean Speeds
 speed_thres = 0;
+%% EXTRACT DATA and ANALYSE for Mean Speeds
+
 
 % Import Data Sets
 strDir = strcat(baseDir,'/OregonR/');
@@ -175,7 +175,7 @@ BWD47_OverallMeanSpeed = nanmean(mean_velo)
 BWD47_OverallMedianSpeed = nanmedian(median_velo)
 %mean_velo = mean_velo(~isnan(mean_velo))
 
-export(BWD46_velodataset,'File','BWD47_velocities.csv','WriteVarNames',true);
+export(BWD47_velodataset,'File','BWD47_velocities.csv','WriteVarNames',true);
 
 dlmwrite('BWD47_velocities.csv',[0 nanmean(BWD47_list_velocities)],'delimiter','\t','-append');
 dlmwrite('BWD47_velocities.csv',[0 nanmedian(BWD47_list_velocities)],'delimiter','\t','-append');
