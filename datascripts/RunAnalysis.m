@@ -246,8 +246,8 @@ BWD48_OverallMedianSpeed = nanmedian(median_velo)
 
 export(BWD48_velodataset,'File','BWD48_velocities.csv','WriteVarNames',true);
 
-dlmwrite('BWD48_velocities.csv',[0 nanmean(BWD482_list_velocities)],'delimiter','\t','-append');
-dlmwrite('BWD48_velocities.csv',[0 nanmedian(BWD482_list_velocities)],'delimiter','\t','-append');
+dlmwrite('BWD48_velocities.csv',[0 nanmean(BWD48_list_velocities)],'delimiter','\t','-append');
+dlmwrite('BWD48_velocities.csv',[0 nanmedian(BWD48_list_velocities)],'delimiter','\t','-append');
 
 %% attP2xC155 (gen ctr BWD.2)
 %import data
