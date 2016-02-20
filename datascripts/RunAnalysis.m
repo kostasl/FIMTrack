@@ -295,24 +295,33 @@ attP40xC155_list_velocities = double(attP40xC155_velodataset(:,2:end));
 vNanCountInColumns = sum(~isnan(attP40xC155_list_velocities),1);
 colIndexToRemove = find(vNanCountInColumns < minTrackletLength);
 attP40xC155_velodataset(:,colIndexToRemove+1) = [];
+%Remove Low Speeds
+[cellRow,cellCol] = find(attP40xC155_list_velocities <= speed_thres);
+attP40xC155_velodataset(cellRow+1,cellCol) = [];
+
 %Update The Matrix Of Tracklets
 attP40xC155_list_velocities = double(attP40xC155_velodataset(:,2:end));
-
-
+runVelo = attP40xC155_list_velocities;
+dataset = attP40xC155_velodataset;
 
 % list_velocities = list_velocities(tbl_velocities > speed_thres);
-mean_velo = nanmean(attP40xC155_list_velocities(attP40xC155_list_velocities>speed_thres));
-median_velo = nanmedian(attP40xC155_list_velocities(attP40xC155_list_velocities>speed_thres));
+%mean_velo = nanmean(attP40xC155_list_velocities(attP40xC155_list_velocities>speed_thres));
+%median_velo = nanmedian(attP40xC155_list_velocities(attP40xC155_list_velocities>speed_thres));
 
-attP40xC155_OverallMeanSpeed = nanmean(mean_velo)
-attP40xC155_OverallMedianSpeed = nanmedian(median_velo)
+%Remove Entries Lower or equal than speed threshold
+%runVelo(runVelo<=speed_thres) = NaN;
+
+mean_velo = nanmean(runVelo);
+median_velo = nanmedian(runVelo);
 %mean_velo = mean_velo(~isnan(mean_velo))
 
-export(attP40xC155_velodataset,'File','attP40xC155_velocities.csv','WriteVarNames',true);
+filename = sprintf('attP40xC155_velocities-gt%d.csv',speed_thres);
+export(dataset,'File',filename,'WriteVarNames',true);
 
-dlmwrite('attP40xC155_velocities.csv',[0 nanmean(attP40xC155_list_velocities)],'delimiter','\t','-append');
-dlmwrite('attP40xC155_velocities.csv',[0 nanmedian(attP40xC155_list_velocities)],'delimiter','\t','-append');
+dlmwrite(filename,[0 mean_velo],'delimiter','\t','-append');
+dlmwrite(filename,[0 median_velo],'delimiter','\t','-append');
 
+nanmean(mean_velo)
 
 
 
