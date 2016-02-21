@@ -1,14 +1,17 @@
+% Office
+baseDir = '/home/klagogia/Videos/FIMTrackVideos'; 
 
+%Home Comp.
+baseDir = '/media/kostasl/FlashDrive/FIMTracker/trackerOutput/';
 
-baseDir = '/media/kostasl/FlashDrive/FIMTracker/trackerOutput';
+s=dir(baseDir);
 
-baseDir = '/home/klagogia/Videos/FIMTrackVideos';
 %strDir = '/media/kostasl/FlashDrive/FIMTracker/FIMtrackerOutput/attP40xC155 (gen ctr BWD)';
 %[attP40_Dat,N,srcDir] = readDataForAnalysis(strDir);
 
 
 minTrackletLength = 200;
-speed_thres = 0;
+speed_thres = 2;
 %% EXTRACT DATA and ANALYSE for Mean Speeds
 
 
@@ -286,30 +289,26 @@ dlmwrite('attP2xC155_velocities.csv',[0 nanmedian(attP2xC155_list_velocities)],'
 strDir = strcat(baseDir,'/attP40xC155 (gen ctr BWD)/');
 [attP40xC155_Dat,N,srcDir] = readDataForAnalysis(strDir);
 
-
+%Dataset and array - use array for calculations / 
 attP40xC155_velodataset = selectFeature(attP40xC155_Dat, 'velo');
-
 attP40xC155_list_velocities = double(attP40xC155_velodataset(:,2:end));
 
 %Remove Short Tracklets from Dataset
 vNanCountInColumns = sum(~isnan(attP40xC155_list_velocities),1);
 colIndexToRemove = find(vNanCountInColumns < minTrackletLength);
 attP40xC155_velodataset(:,colIndexToRemove+1) = [];
+%Update The Matrix Of Tracklets
+attP40xC155_list_velocities = double(attP40xC155_velodataset(:,2:end));
+
 %Remove Low Speeds
 [cellRow,cellCol] = find(attP40xC155_list_velocities <= speed_thres);
-attP40xC155_velodataset(cellRow+1,cellCol) = [];
+%Only way I could find now is just Iterate through Indexes set to NaN
+for i=1:size(cellRow) attP40xC155_velodataset{cellRow(i),cellCol(i)+1} = NaN; end
 
 %Update The Matrix Of Tracklets
 attP40xC155_list_velocities = double(attP40xC155_velodataset(:,2:end));
 runVelo = attP40xC155_list_velocities;
 dataset = attP40xC155_velodataset;
-
-% list_velocities = list_velocities(tbl_velocities > speed_thres);
-%mean_velo = nanmean(attP40xC155_list_velocities(attP40xC155_list_velocities>speed_thres));
-%median_velo = nanmedian(attP40xC155_list_velocities(attP40xC155_list_velocities>speed_thres));
-
-%Remove Entries Lower or equal than speed threshold
-%runVelo(runVelo<=speed_thres) = NaN;
 
 mean_velo = nanmean(runVelo);
 median_velo = nanmedian(runVelo);
@@ -322,8 +321,6 @@ dlmwrite(filename,[0 mean_velo],'delimiter','\t','-append');
 dlmwrite(filename,[0 median_velo],'delimiter','\t','-append');
 
 nanmean(mean_velo)
-
-
 
 %%%
 
@@ -387,10 +384,52 @@ nanmean(mean_velo)
 %hist(WT_list_velocities,20);
 
 
-
 %figure;
 %boxplot(ABv1016_list_velocities);
+%Ignore  1st 2 contain .  & ..
+for k=3:size(s)
+   
+    strDir = strcat(baseDir,'/' ,s(k).name,'/')
+    %
+    %import data
+    [gen_Dat,N,srcDir] = readDataForAnalysis(strDir);
 
+    %Dataset and array - use array for calculations / 
+    gen_velodataset = selectFeature(gen_Dat, 'velo');
+    gen_list_velocities = double(gen_velodataset(:,2:end));
+
+    %Remove Short Tracklets from Dataset
+    vNanCountInColumns = sum(~isnan(gen_list_velocities),1);
+    colIndexToRemove = find(vNanCountInColumns < minTrackletLength);
+    gen_velodataset(:,colIndexToRemove+1) = [];
+    %Update The Matrix Of Tracklets
+    gen_list_velocities = double(gen_velodataset(:,2:end));
+
+    %Remove Low Speeds
+    [cellRow,cellCol] = find(gen_list_velocities <= speed_thres);
+    %Only way I could find now is just Iterate through Indexes set to NaN
+    for i=1:size(cellRow) gen_velodataset{cellRow(i),cellCol(i)+1} = NaN; end
+
+    %Update The Matrix Of Tracklets
+    gen_list_velocities = double(gen_velodataset(:,2:end));
+    runVelo = gen_list_velocities;
+    dataset = gen_velodataset;
+
+    mean_velo = nanmean(runVelo);
+    median_velo = nanmedian(runVelo);
+    %mean_velo = mean_velo(~isnan(mean_velo))
+
+    filename = sprintf('%s-gt%d.csv',s(k).name,speed_thres);
+    export(dataset,'File',filename,'WriteVarNames',true);
+
+    
+    dlmwrite(filename,[0 mean_velo],'delimiter','\t','-append');
+    dlmwrite(filename,[0 median_velo],'delimiter','\t','-append');
+
+    sprintf(filename);
+    nanmean(mean_velo)
+   
+end
 
 
 
