@@ -6,7 +6,7 @@
 baseDir = '/media/kostasl/FlashDrive/FIMTracker/trackerOutput/';
 
 % Office
-baseDir = '/home/klagogia/Videos/FIMTrackVideos/Tracked'; 
+baseDir = '/home/public/FIMTrackVideos/Tracked/'; 
 
 
 s=dir(baseDir);
@@ -16,7 +16,7 @@ s=dir(baseDir);
 
 
 minTrackletLength = 200;
-speed_thres = 4;
+speed_thres = 3; %Set to <0 to remove filter
 
 %% Produce Plots
 %boxplot(WT_list_velocities);
@@ -27,6 +27,7 @@ speed_thres = 4;
 %boxplot(ABv1016_list_velocities);
 %Ignore  1st 2 contain .  & ..
 for k=3:size(s)
+
     
     if s(k).isdir == 0 
         continue; %skip if this is not a directory
@@ -48,10 +49,15 @@ for k=3:size(s)
     %Update The Matrix Of Tracklets
     gen_list_velocities = double(gen_velodataset(:,2:end));
 
-    %Remove Low Speeds
-    [cellRow,cellCol] = find(gen_list_velocities <= speed_thres);
-    %Only way I could find now is just Iterate through Indexes set to NaN
-    for i=1:size(cellRow) gen_velodataset{cellRow(i),cellCol(i)+1} = NaN; end
+    if speed_thres >= 0 
+        %Remove Low Speeds
+        cntExcluded = sum(gen_list_velocities <= speed_thres);
+        %Need the Col Row indexing so I can Translate to the dataset
+        %Coordinates by adding col+1
+        [cellRow,cellCol] = find(gen_list_velocities <= speed_thres);
+        %Only way I could find now is just Iterate through Indexes set to NaN
+        for i=1:size(cellRow) gen_velodataset{cellRow(i),cellCol(i)+1} = NaN; end
+    end
 
     %Update The Matrix Of Tracklets
     gen_list_velocities = double(gen_velodataset(:,2:end));
@@ -60,7 +66,7 @@ for k=3:size(s)
 
     mean_velo = nanmean(runVelo);
     median_velo = nanmedian(runVelo);
-    count_nonNan = sum(isnan(runVelo));
+    count_nonNan = sum(~isnan(runVelo));
     %mean_velo = mean_velo(~isnan(mean_velo))
 
     filename = sprintf('dataout/velocity/%s-gt%d.csv',s(k).name,speed_thres);
@@ -70,6 +76,7 @@ for k=3:size(s)
     dlmwrite(filename,[0 mean_velo],'delimiter','\t','-append');
     dlmwrite(filename,[0 median_velo],'delimiter','\t','-append');
     dlmwrite(filename,[0 count_nonNan],'delimiter','\t','-append');
+    dlmwrite(filename,[0 cntExcluded],'delimiter','\t','-append');
     
     sprintf(filename);
     nanmean(mean_velo)
@@ -110,37 +117,42 @@ for k=3:size(s)
         gen_benddataset.(vars{i}) = abs(gen_benddataset.(vars{i}) - 180);
     end
     
-    gen_list_velocities = double(gen_benddataset(:,2:end));
+    gen_list_bends = double(gen_benddataset(:,2:end));
 
     %Remove Short Tracklets from Dataset
-    vNanCountInColumns = sum(~isnan(gen_list_velocities),1);
+    vNanCountInColumns = sum(~isnan(gen_list_bends),1);
     colIndexToRemove = find(vNanCountInColumns < minTrackletLength);
     gen_benddataset(:,colIndexToRemove+1) = [];
     %Update The Matrix Of Tracklets
-    gen_list_velocities = double(gen_benddataset(:,2:end));
+    gen_list_bends = double(gen_benddataset(:,2:end));
 
     %Remove Low Angles
-    [cellRow,cellCol] = find(abs(gen_list_velocities) <= angle_thres);
+    cntExcluded = sum(gen_list_bends <= angle_thres);
+    [cellRow,cellCol] = find(abs(gen_list_bends) <= angle_thres);
+    
     %Only way I could find now is just Iterate through Indexes set to NaN
     for i=1:size(cellRow) gen_benddataset{cellRow(i),cellCol(i)+1} = NaN; end
 
     %Update The Matrix Of Tracklets
-    gen_list_velocities = double(gen_benddataset(:,2:end));
-    runVelo = gen_list_velocities;
+    gen_list_bends = double(gen_benddataset(:,2:end));
+    runVelo = gen_list_bends;
     dataset = gen_benddataset;
 
     mean_velo   = nanmean(runVelo);
     median_velo = nanmedian(runVelo);
-    count_bends = sum(isnan(runVelo));
+    count_bends =  sum(~isnan(runVelo));
+    
     %mean_velo = mean_velo(~isnan(mean_velo))
 
     filename = sprintf('dataout/bending/bend-%s-gt%d.csv',s(k).name,angle_thres);
     export(dataset,'File',filename,'WriteVarNames',true);
 
     
-    dlmwrite(filename,[0 mean_velo],'delimiter','\t','-append');
-    dlmwrite(filename,[0 median_velo],'delimiter','\t','-append');
-    dlmwrite(filename,[0 count_bends],'delimiter','\t','-append');
+    dlmwrite(filename,['M' mean_velo],'delimiter','\t','-append');
+    dlmwrite(filename,['m' median_velo],'delimiter','\t','-append');
+    dlmwrite(filename,['C' count_bends],'delimiter','\t','-append');
+    dlmwrite(filename,['X' cntExcluded],'delimiter','\t','-append');
+    
 
     sprintf(filename);
     nanmean(mean_velo)
